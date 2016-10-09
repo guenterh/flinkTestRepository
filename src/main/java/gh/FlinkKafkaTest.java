@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer09;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 
 import java.util.Properties;
 
@@ -28,6 +29,7 @@ public class FlinkKafkaTest {
 // only required for Kafka 0.8
         properties.setProperty("zookeeper.connect", "localhost:2181");
         properties.setProperty("group.id", "swissbib.oai");
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         //properties.setProperty("au  to.offset.reset","smallest");
 
 
@@ -43,7 +45,8 @@ public class FlinkKafkaTest {
             @Override
             public String map(String s) throws Exception {
                 iteratons++;
-                return Long.toString(iteratons);
+                //return Long.toString(iteratons);
+                return s;
             }
         }).rebalance().print();
 
